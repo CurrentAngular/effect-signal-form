@@ -1,1 +1,63 @@
-<p>subscribe-form works!</p>
+<h2 class="title">Subscribe to our email</h2>
+<form class="form" (submit)="onSubmit($event)">
+  <mat-form-field appearance="outline">
+    @let firstNameField = form.firstName;
+    @let firstNameState = form.firstName();
+
+    <mat-label>First Name</mat-label>
+    <input [field]="firstNameField" type="text" matInput placeholder="Enter your first name" />
+
+    @if (firstNameState.touched() && firstNameState.invalid()) {
+      @for (error of firstNameState.errors(); track error.kind) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    @let lastNameField = form.lastName;
+    @let lastNameState = form.lastName();
+
+    <mat-label>Last Name</mat-label>
+    <input [field]="lastNameField" type="text" matInput placeholder="Enter your last name" />
+
+    @if (lastNameState.touched() && lastNameState.invalid()) {
+      @for (error of lastNameState.errors(); track error.kind) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    @let emailField = form.email;
+    @let emailState = form.email();
+
+    <mat-label>Email</mat-label>
+    <input [field]="emailField" type="email" matInput placeholder="Enter your email" />
+
+    @if (emailState.touched() && emailState.invalid()) {
+      @for (error of emailState.errors(); track error.kind) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    @let yearsAsFunField = form.yearsAsFun;
+    @let yearsAsFunState = form.yearsAsFun();
+
+    <mat-label>Years as Fun</mat-label>
+    <input [field]="yearsAsFunField" type="number" matInput placeholder="Enter your years" />
+
+    @if (yearsAsFunState.touched() && yearsAsFunState.invalid()) {
+      @for (error of yearsAsFunState.errors(); track error.kind) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    }
+  </mat-form-field>
+
+  <div class="row">
+    <button type="submit" matButton="outlined">Subscribe</button>
+    <button type="button" matButton="outlined">Cancel</button>
+  </div>
+</form>
