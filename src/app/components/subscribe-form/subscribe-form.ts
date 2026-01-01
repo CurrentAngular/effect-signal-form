@@ -1,6 +1,6 @@
 import { Component, effect, signal } from '@angular/core';
 import { Field, form } from '@angular/forms/signals';
-import { initialSubscribeForm, Subscribe } from './subscribe-form.model';
+import { subscribeFormDefaults, Subscribe } from './subscribe-form.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,17 +12,17 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './subscribe-form.scss',
 })
 export class SubscribeForm {
-  readonly #formModel = signal<Subscribe>(initialSubscribeForm);
+  readonly #formModel = signal<Subscribe>(subscribeFormDefaults);
   readonly form = form(this.#formModel);
 
-  onSubmit(event: Event): void {
-    event.preventDefault();
-
+  onSubmit(): void {
     if (this.form().invalid()) {
       return;
     }
 
     console.log('form values', this.form().value());
+    this.form().reset();
+    this.#formModel.set(subscribeFormDefaults);
   }
 
   // Подписка на изменение значения контрола через effect

@@ -1,4 +1,4 @@
-import { email, max, min, minLength, required, REQUIRED, schema } from '@angular/forms/signals';
+import { email, max, min, minLength, required, schema } from '@angular/forms/signals';
 
 export interface Subscribe {
   firstName: string;
@@ -7,7 +7,7 @@ export interface Subscribe {
   yearsAsFun: number;
 }
 
-export const initialSubscribeForm: Subscribe = {
+export const subscribeFormDefaults: Subscribe = {
   firstName: '',
   lastName: '',
   email: '',

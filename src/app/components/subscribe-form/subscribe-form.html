@@ -1,5 +1,5 @@
 <h2 class="title">Subscribe to our email</h2>
-<form class="form" (submit)="onSubmit($event)">
+<form class="form" (submit.prevent)="onSubmit()">
   <mat-form-field appearance="outline">
     @let firstNameField = form.firstName;
     @let firstNameState = form.firstName();
