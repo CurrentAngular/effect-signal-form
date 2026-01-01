@@ -1,19 +1,21 @@
-import { Component, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, signal } from '@angular/core';
 import { Field, form } from '@angular/forms/signals';
-import { subscribeFormDefaults, Subscribe } from './subscribe-form.model';
+import { subscribeFormDefaults, Subscribe, subscribeSchema } from './subscribe-form.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'ef-subscribe-form',
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, Field],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, Field, MatCheckboxModule],
   templateUrl: './subscribe-form.html',
   styleUrl: './subscribe-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscribeForm {
   readonly #formModel = signal<Subscribe>(subscribeFormDefaults);
-  readonly form = form(this.#formModel);
+  readonly form = form(this.#formModel, subscribeSchema);
 
   onSubmit(): void {
     if (this.form().invalid()) {

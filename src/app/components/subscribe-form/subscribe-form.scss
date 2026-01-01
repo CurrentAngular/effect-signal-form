@@ -12,5 +12,16 @@
 
 .row {
   display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.gap-20 {
   gap: 20px;
+}
+
+.no-select {
+  user-select: none;
 }
