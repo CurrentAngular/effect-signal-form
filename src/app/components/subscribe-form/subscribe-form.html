@@ -1,11 +1,10 @@
 <h2 class="title">Subscribe to our email</h2>
 <form class="form" (submit.prevent)="onSubmit()">
   <mat-form-field appearance="outline">
-    @let firstNameField = form.firstName;
     @let firstNameState = form.firstName();
 
     <mat-label>First Name</mat-label>
-    <input [field]="firstNameField" type="text" matInput placeholder="Enter your first name" />
+    <input [field]="form.firstName" type="text" matInput placeholder="Enter your first name" />
 
     @if (firstNameState.touched() && firstNameState.invalid()) {
       @for (error of firstNameState.errors(); track error.kind) {
@@ -15,11 +14,10 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    @let lastNameField = form.lastName;
     @let lastNameState = form.lastName();
 
     <mat-label>Last Name</mat-label>
-    <input [field]="lastNameField" type="text" matInput placeholder="Enter your last name" />
+    <input [field]="form.lastName" type="text" matInput placeholder="Enter your last name" />
 
     @if (lastNameState.touched() && lastNameState.invalid()) {
       @for (error of lastNameState.errors(); track error.kind) {
@@ -29,11 +27,10 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    @let emailField = form.email;
     @let emailState = form.email();
 
     <mat-label>Email</mat-label>
-    <input [field]="emailField" type="email" matInput placeholder="Enter your email" />
+    <input [field]="form.email" type="email" matInput placeholder="Enter your email" />
 
     @if (emailState.touched() && emailState.invalid()) {
       @for (error of emailState.errors(); track error.kind) {
@@ -43,11 +40,33 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    @let yearsAsFunField = form.yearsAsFun;
+    @let phoneState = form.phone();
+
+    <mat-label>Enter your phone</mat-label>
+    <input [field]="form.phone" type="tel" matInput placeholder="Enter your phone number" />
+
+    @if (phoneState.touched() && phoneState.invalid()) {
+      @for (error of phoneState.errors(); track error.kind) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    }
+  </mat-form-field>
+
+  <div class="row gap-20">
+    <div class="row-column">
+      <p>Check if required</p>
+    </div>
+    <div class="row column">
+      <mat-checkbox [field]="form.isEmailRequired" class="no-select">email</mat-checkbox>
+      <mat-checkbox [field]="form.isPhoneRequired" class="no-select">phone</mat-checkbox>
+    </div>
+  </div>
+
+  <mat-form-field appearance="outline">
     @let yearsAsFunState = form.yearsAsFun();
 
     <mat-label>Years as Fun</mat-label>
-    <input [field]="yearsAsFunField" type="number" matInput placeholder="Enter your years" />
+    <input [field]="form.yearsAsFun" type="number" matInput placeholder="Enter your years" />
 
     @if (yearsAsFunState.touched() && yearsAsFunState.invalid()) {
       @for (error of yearsAsFunState.errors(); track error.kind) {
@@ -56,8 +75,10 @@
     }
   </mat-form-field>
 
-  <div class="row">
-    <button type="submit" matButton="outlined">Subscribe</button>
+  <div class="row gap-20">
+    <button [disabled]="form().submitting() || form().invalid()" type="submit" matButton="outlined">
+      Subscribe
+    </button>
     <button type="button" matButton="outlined">Cancel</button>
   </div>
 </form>
