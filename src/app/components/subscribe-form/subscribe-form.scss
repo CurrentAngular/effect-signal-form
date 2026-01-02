@@ -29,3 +29,10 @@
 .capitalize {
   text-transform: capitalize;
 }
+
+.hint {
+  color: oklch(70% 0.1 18);
+  font-size: 12px;
+  font-style: italic;
+  padding-left: 12px;
+}
