@@ -1,4 +1,14 @@
-import { applyWhen, email, max, min, minLength, required, schema } from '@angular/forms/signals';
+import {
+  applyWhen,
+  customError,
+  email,
+  max,
+  min,
+  minLength,
+  required,
+  schema,
+  validateTree,
+} from '@angular/forms/signals';
 
 const EMAIL = {
   MIN: 6,
@@ -55,6 +65,30 @@ export const subscribeSchema = schema<Subscribe>((path) => {
       });
     },
   );
+
+  // Применяем validateTree, когда нужно проверять состояние нескольких контролов одновременно и сразу
+  // можем применять разные правила валидации к разным контролам
+  validateTree(path, ({ valueOf, fieldTreeOf }) => {
+    const isEmailRequiredValue = valueOf(path.isEmailRequired);
+    const isPhoneRequiredValue = valueOf(path.isPhoneRequired);
+
+    if (isEmailRequiredValue || isPhoneRequiredValue) {
+      return null;
+    }
+
+    return [
+      customError({
+        fieldTree: fieldTreeOf(path.isEmailRequired),
+        kind: 'sendViaMissing',
+        message: 'Must select Email or Phone or both fields to send',
+      }),
+      customError({
+        fieldTree: fieldTreeOf(path.isPhoneRequired),
+        kind: 'sendViaMissing',
+        message: 'Must select Email or Phone or both fields to send',
+      }),
+    ];
+  });
 
   min(path.yearsAsFun, YEARS_AS_FUN.MIN, { message: 'Years can not be negative' });
   max(path.yearsAsFun, YEARS_AS_FUN.MAX, { message: 'Enter valid number of years' });
