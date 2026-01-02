@@ -1,4 +1,17 @@
-import { email, max, min, minLength, required, schema } from '@angular/forms/signals';
+import { applyWhen, email, max, min, minLength, required, schema } from '@angular/forms/signals';
+
+const EMAIL = {
+  MIN: 6,
+};
+
+const PHONE = {
+  MIN: 10,
+};
+
+const YEARS_AS_FUN = {
+  MIN: 0,
+  MAX: 100,
+};
 
 export interface Subscribe {
   firstName: string;
@@ -10,7 +23,7 @@ export interface Subscribe {
   yearsAsFun: number;
 }
 
-export const subscribeFormDefaults: Subscribe = {
+export const initialFormData: Subscribe = {
   firstName: '',
   lastName: '',
   email: '',
@@ -29,13 +42,20 @@ export const subscribeSchema = schema<Subscribe>((path) => {
     message: 'Email field is required',
   });
   email(path.email, { message: 'Enter a valid email' });
-  minLength(path.email, 6, { message: 'Email must at least be 6 characters' });
+  minLength(path.email, EMAIL.MIN, { message: `Email must at least be ${EMAIL.MIN} characters` });
 
-  required(path.phone, {
-    when: ({ valueOf }) => valueOf(path.isPhoneRequired),
-    message: 'Phone field is required',
-  });
+  // Использовали applyWhen потому, что схема валидации содержит несколько правил
+  applyWhen(
+    path.phone,
+    ({ valueOf }) => valueOf(path.isPhoneRequired),
+    (pathPhone) => {
+      required(pathPhone, { message: 'Phone field is required' });
+      minLength(pathPhone, PHONE.MIN, {
+        message: `Email must at least be ${PHONE.MIN} characters`,
+      });
+    },
+  );
 
-  min(path.yearsAsFun, 0, { message: 'Years can not be negative' });
-  max(path.yearsAsFun, 100, { message: 'Enter valid number of years' });
+  min(path.yearsAsFun, YEARS_AS_FUN.MIN, { message: 'Years can not be negative' });
+  max(path.yearsAsFun, YEARS_AS_FUN.MAX, { message: 'Enter valid number of years' });
 });
